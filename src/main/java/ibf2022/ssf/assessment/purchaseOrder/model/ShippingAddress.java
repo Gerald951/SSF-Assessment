@@ -3,7 +3,6 @@ package ibf2022.ssf.assessment.purchaseOrder.model;
 import java.io.Serializable;
 
 import jakarta.json.JsonObject;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 

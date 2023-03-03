@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public class CartSvc {
 
 	private String restEndpoint = "https://quotation.chuklee.com"; 
 
-    public Optional<Quotation> getQuotations(List<String> items) throws Exception {
+    public Quotation getQuotations(List<String> items) throws Exception {
 
         JsonArrayBuilder arrOfItems = Json.createArrayBuilder();
 
@@ -85,6 +86,7 @@ public class CartSvc {
 
     String payload = "";
     int statusCode = 500;
+	Quotation quotation = new Quotation();
     try {
         resp = template.exchange(req, String.class);
         payload = resp.getBody();
@@ -92,10 +94,11 @@ public class CartSvc {
     } catch (HttpClientErrorException ex) {
         payload = ex.getResponseBodyAsString();
         statusCode = ex.getStatusCode().value();
-        return Optional.empty();
+		quotation.setErrorMessage(payload);
+		quotation.setErrorStatusCode(statusCode);
+		System.out.println("{ error %d: error message:%s}".formatted(statusCode, payload));
+        return quotation;
     } 
-
-        Quotation quotation = new Quotation();
 
 		// Parse the result to Quotation
 		JsonReader reader = Json.createReader(new StringReader(payload));
@@ -105,13 +108,13 @@ public class CartSvc {
 
         JsonObject quotations = quotationJson.getJsonObject("quotations");
         InputStream quo = new ByteArrayInputStream((quotations.toString()).getBytes());
-        HashMap<String,Float> quotationMap = new ObjectMapper().readValue(quo, HashMap.class);
+        LinkedHashMap<String,Float> quotationMap = new ObjectMapper().readValue(quo, LinkedHashMap.class);
 
 		// Set the quoteId & quotations
 		quotation.setQuoteId(quoteId.toString());
         quotation.setQuotations(quotationMap);
 
-		return Optional.of(quotation);
+		return quotation;
   
     }
 

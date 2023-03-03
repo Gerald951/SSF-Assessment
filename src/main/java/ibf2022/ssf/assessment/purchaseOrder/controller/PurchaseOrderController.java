@@ -1,6 +1,8 @@
 package ibf2022.ssf.assessment.purchaseOrder.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ibf2022.ssf.assessment.purchaseOrder.model.Cart;
 import ibf2022.ssf.assessment.purchaseOrder.model.Item;
+import ibf2022.ssf.assessment.purchaseOrder.model.Quotation;
 import ibf2022.ssf.assessment.purchaseOrder.model.ShippingAddress;
 import ibf2022.ssf.assessment.purchaseOrder.service.CartSvc;
 import jakarta.servlet.http.HttpSession;
@@ -87,6 +90,42 @@ public class PurchaseOrderController {
         model.addAttribute("shippingAddress", shippingAddress);
 
         return "view2";
+    }
+
+    @GetMapping(path = "/quotation")
+    public String getQuotations(List<String> items, HttpSession sess) throws Exception {
+        //Retrieving quotation
+        Quotation quotation = cartSvc.getQuotations(items);
+
+        //printing error message
+        if (quotation.errorMessageIsEmpty()) {
+            return "{ error:%d, error message:%s }".formatted(quotation.getErrorStatusCode(), opt.getErrorMessage());
+         }
+        
+        float totalCost = 0f;
+
+        Cart cart = (Cart)sess.getAttribute("cart");
+        
+        //converting quotation into 
+        Set<String> keySet = quotation.getQuotations().keySet();
+
+        String[] keyArray
+            = keySet.toArray(new String[keySet.size()]);
+
+        for (int i=0; i<keyArray.length; i++) {
+            for (int j=0; j<cart.getContents().size(); j++) {
+                List<Item> item = cart.getItemName(keyArray[i]);
+
+                if (cart.isItemName()) {
+                    for (int k=0; k<item.size(); k++) {
+                        totalCost += (item.getQuantity()*quotation.quotations.keySet);
+                    }
+                }
+            }
+
+        }
+
+         return "Success";
     }
 
     
