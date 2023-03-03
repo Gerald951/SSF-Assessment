@@ -1,6 +1,5 @@
 package ibf2022.ssf.assessment.purchaseOrder.repository;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -9,21 +8,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import ibf2022.ssf.assessment.purchaseOrder.model.Cart;
+import ibf2022.ssf.assessment.purchaseOrder.model.Order;
+import ibf2022.ssf.assessment.purchaseOrder.model.ShippingAddress;
 
 @Repository
 public class CartRepo {
 
     @Autowired  @Qualifier("my-cart")
-    private Map<String, Object> order;
+    private Map<String, Order> order;
 
-    public Map<String,Cart> saveCart(String item, Integer quantity) {
-        Cart cart = new Cart(item, quantity);
-        mapCart.put(item, cart);
-        return mapCart;
+    public Order saveCart(String quotationId, Cart cart, ShippingAddress shippingAddress) {
+        Order order = new Order(cart, shippingAddress);
+        order.put(quotationId, order);
+        return order;
     }
 
-    public Optional<Cart> getCart(String item) {
-        Optional<Cart> getCart = Optional.ofNullable(mapCart.get(item));
+    public Optional<Order> getCart(String quotationId) {
+        Optional<Order> getCart = Optional.ofNullable(order.get(quotationId));
         return getCart;
     }
 

@@ -99,7 +99,7 @@ public class PurchaseOrderController {
 
         //printing error message
         if (quotation.errorMessageIsEmpty()) {
-            return "{ error:%d, error message:%s }".formatted(quotation.getErrorStatusCode(), opt.getErrorMessage());
+            return "{ error:%d, error message:%s }".formatted(quotation.getErrorStatusCode(), quotation.getErrorMessage());
          }
         
         float totalCost = 0f;
@@ -112,20 +112,21 @@ public class PurchaseOrderController {
         String[] keyArray
             = keySet.toArray(new String[keySet.size()]);
 
+        // Calculating totalCost
         for (int i=0; i<keyArray.length; i++) {
             for (int j=0; j<cart.getContents().size(); j++) {
                 List<Item> item = cart.getItemName(keyArray[i]);
 
                 if (cart.isItemName()) {
                     for (int k=0; k<item.size(); k++) {
-                        totalCost += (item.getQuantity()*quotation.quotations.keySet);
+                        totalCost += 0;
                     }
                 }
             }
 
         }
 
-         return "Success";
+         return "View3";
     }
 
     
