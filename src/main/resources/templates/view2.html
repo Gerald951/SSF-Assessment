@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shipping Address</title>
+    </head>
+    <body>
+        <h1>Shipping Address</h1>
+        <form method="/POST" data-th-action="/quotation" data-th-object="${shippingAddress}">
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input type="text" name="customerName">
+                    </td>
+                    <td data-th-if="${#fields.hasErrors('customerName')}">
+                        <span data-th-errors="*{customerName}" data-th-errorclass="error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td>
+                        <input type="text" name="customerAddress">
+                    </td>
+                    <td data-th-if="${#fields.hasErrors('customerAddress')}">
+                        <span data-th-errors="*{customerAddress}" data-th-errorclass="error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button formaction="redirect:/" formmethod="/GET">Back</button>
+                        <button>Checkout</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+    </body>
+</html>
